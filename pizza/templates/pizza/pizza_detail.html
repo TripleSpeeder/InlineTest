@@ -5,6 +5,14 @@
 </head>
 <body>
 <p>This is pizza "{{ pizza }}", pk {{ pizza.pk }}.</p>
+<p>Toppings:</p>
+<table>
+    {% for usage in pizza.toppingusage_set.all %}
+    <tr>
+        <td>{{ usage.amount }}</td><td>{{ usage.topping }}</td>
+    </tr>
+    {% endfor %}
+</table>
 <p><a href="{% url 'pizza_delete' pizza.pk %}">delete</a>  </p>
 <p><a href="{% url 'pizza_update' pizza.pk %}">update</a>  </p>
 <p>Back to <a href="{% url 'pizza_list' %}">List</a> </p>
