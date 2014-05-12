@@ -3,12 +3,16 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic import DeleteView, UpdateView, CreateView
+from django.views.generic import DeleteView, UpdateView, CreateView, DetailView, ListView
 from pizza.models import Pizza
 
+class PizzaList(ListView):
+    model = Pizza
+    context_object_name = 'pizza_list'
 
-def detail(request, pizza_id):
-    return HttpResponse("You're looking at pizza %s." % pizza_id)
+class PizzaDetail(DetailView):
+    context_object_name = 'pizza'
+    model = Pizza
 
 class PizzaCreate(CreateView):
     model = Pizza
@@ -20,4 +24,5 @@ class PizzaUpdate(UpdateView):
 
 class PizzaDelete(DeleteView):
     model = Pizza
-    success_url = reverse_lazy('author-list')
+    context_object_name = 'pizza'
+    success_url = reverse_lazy('pizza_list')

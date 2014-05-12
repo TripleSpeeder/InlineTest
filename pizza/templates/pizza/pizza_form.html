@@ -4,7 +4,22 @@
     <title></title>
 </head>
 <body>
-<h1>FORMS!!!111</h1>
-{{ form.as_p }}
+<h1>
+    {% if pizza.pk %}
+    Edit Pizza {{ pizza }}
+    {% else %}
+    Create new Pizza
+    {% endif %}
+</h1>
+<p>I want to display a form where I can edit pizza toppings: Add/Remove toppings and also create new toppings all in one page.</p>
+{% if pizza.pk %}
+    <form action="{% url 'pizza_update' pizza.pk %}" method="post">
+{% else %}
+    <form action="{% url 'pizza_add' %}" method="post">
+{% endif %}
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+    </form>
 </body>
 </html>

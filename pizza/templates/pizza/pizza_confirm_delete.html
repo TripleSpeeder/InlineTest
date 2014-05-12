@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Really delete {{ pizza }} ?</title>
+</head>
+<body>
+<p>Please confirm deleting of pizza {{ pizza }}</p>
+<form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Submit" />
+</form>
+</body>
+</html>

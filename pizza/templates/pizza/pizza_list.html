@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pizza list</title>
+</head>
+<body>
+
+<p>Existing pizzas:</p>
+<table>
+{% for pizza in pizza_list %}
+<tr>
+    <td><a href="{% url 'pizza_detail' pizza.pk %}">{{ pizza }}</a> </td>
+</tr>
+{% endfor %}
+</table>
+<p>
+    <a href="{% url 'pizza_add' %}">Add pizza</a>
+</p>
+
+</body>
+</html>
