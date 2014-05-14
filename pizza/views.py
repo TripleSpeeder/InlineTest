@@ -44,13 +44,9 @@ class PizzaEdit(TemplateView):
         """
 
         self.get_instance(args, kwargs)
-        pizza_form = PizzaForm(instance = self.pizza)
-        topping_usage_formset = ToppingUsageFormSet(instance=self.pizza)
-        return self.render_to_response(self.get_context_data(
-            pizza=self.pizza,
-            pizza_form=pizza_form,
-            topping_usage_formset=topping_usage_formset
-        ))
+        self.pizza_form = PizzaForm(instance = self.pizza)
+        self.topping_usage_formset = ToppingUsageFormSet(instance=self.pizza)
+        return self.render_to_response(self.get_context_data())
 
     def post(self, request, *args, **kwargs):
         """
@@ -65,25 +61,29 @@ class PizzaEdit(TemplateView):
         - Save toppingUsage
         """
         self.get_instance(args, kwargs)
-        pizza_form = PizzaForm(data=self.request.POST, instance=self.pizza)
-        topping_usage_formset = ToppingUsageFormSet(data=self.request.POST, instance=self.pizza)
-        if pizza_form.is_valid() and topping_usage_formset.is_valid():
+        self.pizza_form = PizzaForm(data=self.request.POST, instance=self.pizza)
+        self.topping_usage_formset = ToppingUsageFormSet(data=self.request.POST, instance=self.pizza)
+        if self.pizza_form.is_valid() and self.topping_usage_formset.is_valid():
             # save pizza
-            self.pizza = pizza_form.save()
+            self.pizza = self.pizza_form.save()
             # Set pizza instance for toppingusageset before saving it
             # This is only necessary for creating new pizza, but should not harm anyway...
-            topping_usage_formset.instance = self.pizza
+            self.topping_usage_formset.instance = self.pizza
             # Save toppingusageset
-            topping_usage_formset.save()
+            self.topping_usage_formset.save()
             # return pizza url
             return HttpResponseRedirect(self.pizza.get_absolute_url())
         else:
-            return self.render_to_response(self.get_context_data(
-                pizza=self.pizza,
-                pizza_form=pizza_form,
-                topping_usage_formset=topping_usage_formset
-            ))
+            return self.render_to_response(self.get_context_data())
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PizzaEdit, self).get_context_data(**kwargs)
+        # Add extra data
+        context['pizza'] = self.pizza
+        context['pizza_form'] = self.pizza_form
+        context['topping_usage_formset'] = self.topping_usage_formset
+        return context
 
 class GenericPizzaCreate(CreateView):
     model = Pizza
