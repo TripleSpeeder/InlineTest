@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 
 from pizza import views
-from pizza.views import PizzaEdit, PizzaUpdate, PizzaDelete, PizzaDetail, PizzaList
+from pizza.views import PizzaEdit, PizzaDelete, PizzaDetail, PizzaList
 
 urlpatterns = patterns('',
 
