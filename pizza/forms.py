@@ -1,6 +1,10 @@
-from django.forms.models import inlineformset_factory
+from django.forms.models import modelform_factory, inlineformset_factory
 
 # Define forms
-from pizza.models import Pizza, ToppingUsage
+from pizza.models import Pizza, Topping, ToppingUsage
 
-PizzaFormSet = inlineformset_factory(Pizza, ToppingUsage)
+PizzaForm = modelform_factory(Pizza, fields=("name",))
+ToppingForm = modelform_factory(Topping, fields=("name",))
+ToppingUsageForm = modelform_factory(ToppingUsage, fields=("topping", "amount",))
+
+ToppingUsageFormSet = inlineformset_factory(Pizza,ToppingUsage)

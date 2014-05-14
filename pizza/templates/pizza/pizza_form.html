@@ -18,7 +18,11 @@
     <form action="{% url 'pizza_add' %}" method="post">
 {% endif %}
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ pizza_form.as_p }}
+{{ topping_usage_formset.management_form }}
+    {% for form in topping_usage_formset %}
+        <p>{{ form }}</p>
+    {% endfor %}
         <input type="submit" value="Submit" />
     </form>
 </body>
