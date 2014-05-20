@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.views.generic import DeleteView, UpdateView, CreateView, DetailView, ListView, TemplateView
-from pizza.models import Pizza
+from pizza.models import Pizza, Topping
 from pizza.forms import PizzaForm, ToppingForm, ToppingUsageForm, ToppingUsageFormSet
 
 
@@ -37,10 +37,10 @@ class PizzaEdit(TemplateView):
     def get(self, request, *args, **kwargs):
         """
         Handles GET requests and instantiates a blank version of the forms.
-        Should display 3 parts:
+        Should display:
          - Pizzaform to create a new pizza
-         - [Toppingform to create a new Topping]
-         - Set of Toppingusages to specify the usage parameters
+         - Set of Toppingusages to specify the usage parameters of a topping
+         - Possibility to create new topping on-the-fly
         """
 
         self.get_instance(args, kwargs)
@@ -83,6 +83,7 @@ class PizzaEdit(TemplateView):
         context['pizza'] = self.pizza
         context['pizza_form'] = self.pizza_form
         context['topping_usage_formset'] = self.topping_usage_formset
+        context['toppings'] = Topping.objects.all()
         return context
 
 class GenericPizzaCreate(CreateView):

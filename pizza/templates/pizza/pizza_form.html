@@ -1,29 +1,114 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>
+        {% if pizza.pk %}
+            Edit Pizza {{ pizza }}
+        {% else %}
+            Create new Pizza
+        {% endif %}
+
+    </title>
+
+    {% bootstrap_css %}
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    {% bootstrap_javascript %}
+
+    <!-- TypeAhead for autocomplete, load css and javascript -->
+    <link href="{% static 'pizza/css/typeaheadjs.css' %}" rel="stylesheet">
+    <script src="{% static 'pizza/js/typeahead.bundle.min.js' %}"></script>
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
+    <script language="JavaScript">
+        var keyMatcher = function (obj) {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                // iterate through the keys of obj and for any key that
+                // contains the substring `q`, add obj to the `matches` array
+                for (var key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        if (substrRegex.test(obj[key])) {
+                            matches.push({ id: key, value: obj[key]});
+                        }
+                    }
+                }
+                cb(matches);
+            };
+        };
+
+        var toppings = {
+            {% for topping in toppings %}
+            {{ topping.pk }} : '{{ topping.name }}',
+            {% endfor %}
+        };
+
+        $(document).ready(function () {
+            $('#the-basics .typeahead').typeahead({
+                        hint: true,
+                        highlight: true,
+                        minLength: 1
+                    },
+                    {
+                        name: 'toppings',
+                        displayKey: 'value',
+                        // source: substringMatcher(toppings)
+                        source: keyMatcher(toppings)
+                    });
+        });
+    </script>
 </head>
 <body>
-<h1>
-    {% if pizza.pk %}
-    Edit Pizza {{ pizza }}
-    {% else %}
-    Create new Pizza
-    {% endif %}
-</h1>
-<p>I want to display a form where I can edit pizza toppings: Add/Remove toppings and also create new toppings all in one page.</p>
-{% if pizza.pk %}
-    <form action="{% url 'pizza_update' pizza.pk %}" method="post">
-{% else %}
-    <form action="{% url 'pizza_add' %}" method="post">
-{% endif %}
-        {% csrf_token %}
-        {{ pizza_form.as_p }}
-{{ topping_usage_formset.management_form }}
-    {% for form in topping_usage_formset %}
-        <p>{{ form }}</p>
-    {% endfor %}
-        <input type="submit" value="Submit" />
-    </form>
+<div class="container">
+    <h1>
+        {% if pizza.pk %}
+            Edit Pizza {{ pizza }}
+        {% else %}
+            Create new Pizza
+        {% endif %}
+    </h1>
+
+    <div class="row">
+        <div class="col-md-10">
+            <div id="the-basics">
+                <input class="typeahead" type="text" placeholder="Select topping">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <p>I want to display a form where I can edit pizza toppings: Add/Remove toppings and also create new
+                toppings all in one page.</p>
+            {% if pizza.pk %}
+                <form action="{% url 'pizza_update' pizza.pk %}" method="post">
+            {% else %}
+                <form action="{% url 'pizza_add' %}" method="post">
+            {% endif %}
+            {% csrf_token %}
+            {% bootstrap_form pizza_form %}
+            {% bootstrap_formset topping_usage_formset set_required=False layout=horizontal %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    Submit
+                </button>
+            {% endbuttons %}
+            </form>
+
+        </div>
+    </div>
+</div>
 </body>
 </html>

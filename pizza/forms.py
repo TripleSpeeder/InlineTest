@@ -7,4 +7,4 @@ PizzaForm = modelform_factory(Pizza, fields=("name",))
 ToppingForm = modelform_factory(Topping, fields=("name",))
 ToppingUsageForm = modelform_factory(ToppingUsage, fields=("topping", "amount",))
 
-ToppingUsageFormSet = inlineformset_factory(Pizza,ToppingUsage)
+ToppingUsageFormSet = inlineformset_factory(Pizza,ToppingUsage, extra=1)
