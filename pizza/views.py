@@ -98,3 +98,6 @@ class PizzaDelete(DeleteView):
     model = Pizza
     context_object_name = 'pizza'
     success_url = reverse_lazy('pizza_list')
+
+class PizzaAngular(TemplateView):
+    template_name = 'pizza/angular/index.html'
