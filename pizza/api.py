@@ -7,5 +7,5 @@ from pizza.models import Pizza, Topping
 class PizzaResource(ModelResource):
     class Meta:
         queryset = Pizza.objects.all()
-        authorization= Authorization()
+        authorization=Authorization()
 
