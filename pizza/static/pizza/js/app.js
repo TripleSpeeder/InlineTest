@@ -1,8 +1,25 @@
-angular.module('tutorialApp', [])
-    .controller('ArticlesCtrl', function ($scope) {
-        $scope.articles = [
-            { id: 1, name: "Pizza Vegetaria", price: 5 },
-            { id: 2, name: "Pizza Salami", price: 5.5 },
-            { id: 3, name: "Pizza Thunfisch", price: 6 }
-        ];
-    });
+var app = angular.module('PizzaApp', ['ui.router', 'ng.django.forms']);
+
+app.config(function ($httpProvider) {
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+});
+
+app.config(function ($stateProvider, $urlRouterProvider) {
+    // For any unmatched url, send to /route1
+    $urlRouterProvider.otherwise("/");
+    $stateProvider
+        .state('index', {
+
+            url: "/",
+            templateUrl: "/static/html/partials/_job_list.html",
+            controller: "JobList"
+        })
+
+       .state('new', {
+
+            url: "/new",
+            templateUrl: "/jobs/job-form",
+            controller: "JobFormCtrl"
+        })
+})
+

@@ -7,5 +7,7 @@ from pizza.models import Pizza, Topping
 class PizzaResource(ModelResource):
     class Meta:
         queryset = Pizza.objects.all()
-        authorization=Authorization()
+        resource_name = 'pizza'
+        authorization = Authorization()
+        always_return_data = True         # required for angular?
 

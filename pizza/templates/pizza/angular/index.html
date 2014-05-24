@@ -1,30 +1,14 @@
+{% extends "pizza/angular/base.html" %}
+
 {% load staticfiles %}
+{% load i18n %}
 
+{% block content %}
+<div class="container content" ng-app="PizzaApp">
+    <div ui-view >Loading...</div>
+</div>
+{% endblock content %}
 
-<html ng-app="tutorialApp">
-<head>
-    <meta charset="utf8"/>
-    <title>AngularJS Tutorial</title>
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.js"></script>
+{% block extra_javascript %}
     <script src="{% static 'pizza/js/app.js' %}"></script>
-</head>
-<body>
-
-<input type="text" ng-model="search">
-
-
-<table class="table" ng-controller="ArticlesCtrl">
-{% verbatim %}
-  <tr ng-repeat="article in articles | filter:search">
-    <td>{{article.id}}</td>
-    <td>{{article.name}}</td>
-    <td>{{article.price}}</td>
-  </tr>
-  {% endverbatim %}
-</table>
-
-<p ng-show="search">Du suchst gerade nach: {{ search }}</p>
-
-</body>
-</html>
+{% endblock extra_javascript %}
